@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: WorldStation
+  datasource:
+    url: jdbc:postgresql://localhost:5432/station
+    username: chiyuki
+    password: chiyuki
+    driver-class-name: org.postgresql.Driver
