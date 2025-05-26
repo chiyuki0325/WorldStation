@@ -6,3 +6,19 @@ spring:
     username: chiyuki
     password: chiyuki
     driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          smbx-world:
+            client-id: "***REMOVED***"
+            client-secret: "***REMOVED***"
+            authorization-grant-type: authorization_code
+            scope: "user.read"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          smbx-world:
+            authorization-uri: https://smbx.world/oauth/authorize
+            token-uri: https://smbx.world/oauth/token
+            user-info-uri: https://smbx.world/api/user
+            user-name-attribute: nickname
