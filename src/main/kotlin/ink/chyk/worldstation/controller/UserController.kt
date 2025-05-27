@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class UserController {
     @GetMapping("/user")
-    @ResponseBody
     fun user(@AuthenticationPrincipal principal: OAuth2User): String {
-        return "Hello, " + principal.getAttribute<Any?>("nickname")
+        return "Hello, ${principal.getAttribute<Any?>("nickname")} ${principal.getAttribute<Any?>("id")}!"
     }
 }

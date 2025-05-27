@@ -23,7 +23,7 @@ class SecurityConfig {
             }
             .oauth2Login { oauth2 ->
                 oauth2
-                    .defaultSuccessUrl("/pageNeedsAuth", true)
+                    .defaultSuccessUrl("/user", true)
             };
 
 
