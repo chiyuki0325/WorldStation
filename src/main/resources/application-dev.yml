@@ -2,9 +2,9 @@ spring:
   application:
     name: WorldStation
   datasource:
-    url: jdbc:postgresql://localhost:5432/station
-    username: chiyuki
-    password: chiyuki
+    url: jdbc:postgresql://host.home.chyk.ink:15432/station
+    username: station
+    password: station_password
     driver-class-name: org.postgresql.Driver
   security:
     oauth2:
