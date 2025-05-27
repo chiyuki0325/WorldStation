@@ -18,6 +18,9 @@ repositories {
     mavenCentral()
 }
 
+
+
+
 dependencies {
     // Spring Boot 相关依赖
     implementation("org.springframework.boot:spring-boot-starter")
@@ -27,7 +30,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    // 调试工具
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
+
     // Spring Boot 验证方案
+    ext["spring-security.version"] = "6.5.0"
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 

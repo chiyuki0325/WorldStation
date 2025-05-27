@@ -1,32 +1,42 @@
 package ink.chyk.worldstation.configuration
 
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.context.annotation.*
+import org.springframework.security.config.annotation.web.builders.*
+import org.springframework.security.config.annotation.web.configuration.*
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
+
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
     @Bean
-    @Throws(Exception::class)
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain? {
-        http
-            .authorizeHttpRequests { auth ->
-                auth
-                    // 首页无需登录
-                    .requestMatchers("/").permitAll()
-                    // 登录页面必然也无需登录
-                    .requestMatchers("/login/**", "/oauth2/**").permitAll()
-                    .anyRequest().authenticated()
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        // fixes from https://stackoverflow.com/questions/74447118/csrf-protection-not-working-with-spring-security-6
+
+        // 修复 Spring Security 6 中，默认不提供 CSRF 令牌的问题
+        val requestHandler = CsrfTokenRequestAttributeHandler()
+        requestHandler.setCsrfRequestAttributeName(null)
+
+        http {
+            csrf {
+                csrfTokenRepository  = CookieCsrfTokenRepository.withHttpOnlyFalse()
+                csrfTokenRequestHandler = requestHandler
             }
-            .oauth2Login { oauth2 ->
-                oauth2
-                    .defaultSuccessUrl("/user", true)
-            };
-
-
+            authorizeHttpRequests {
+                authorize("/", permitAll)
+                authorize("/login/**", permitAll)
+                authorize("/oauth2/**", permitAll)
+                authorize("/docs/**", permitAll)
+                authorize("/pageNeedsAuth", authenticated)
+                authorize(anyRequest, authenticated)
+            }
+            oauth2Login {
+                defaultSuccessUrl("/user", true)
+            }
+        }
         return http.build()
     }
 }

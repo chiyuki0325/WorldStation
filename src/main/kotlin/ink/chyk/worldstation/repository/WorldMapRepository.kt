@@ -6,12 +6,13 @@ import ink.chyk.worldstation.enum.GameVersion
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.update
 import org.springframework.stereotype.Repository
 
 @Repository
 class WorldMapRepository {
-    fun newWorldMap(worldMapDto: WorldMapDTO): Int = transaction {
-        WorldMap.insert {
+    fun newWorldMap(worldMapDto: WorldMapDTO): WorldMapDTO = transaction {
+        val id = WorldMap.insert {
             it[title] = worldMapDto.title
             it[author] = worldMapDto.author
             it[uploader] = worldMapDto.uploader
@@ -19,10 +20,21 @@ class WorldMapRepository {
             it[downloadProvider] = worldMapDto.downloadProvider
             it[downloadUrl] = worldMapDto.downloadUrl
         } get WorldMap.id
+
+        worldMapDto.copy(id = id)
     }
 
-    fun updateWorldMap(worldMapDto: WorldMapDTO): Boolean {
-        TODO("not implemented")
+    fun updateWorldMap(worldMapDto: WorldMapDTO): Boolean = transaction {
+        // 请求参数错误则直接返回 false
+        if (worldMapDto.id == null) return@transaction false
+        WorldMap.update({ WorldMap.id eq worldMapDto.id }) {
+            it[title] = worldMapDto.title
+            it[author] = worldMapDto.author
+            it[uploader] = worldMapDto.uploader
+            it[gameVersion] = worldMapDto.gameVersion
+            it[downloadProvider] = worldMapDto.downloadProvider
+            it[downloadUrl] = worldMapDto.downloadUrl
+        } > 0  // 更新的行数大于 0 则表示更新成功
     }
 
     fun getWorldMapById(id: Int): WorldMapDTO? {

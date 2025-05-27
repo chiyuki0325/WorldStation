@@ -22,3 +22,20 @@ spring:
             token-uri: https://smbx.world/oauth/token
             user-info-uri: https://smbx.world/api/user
             user-name-attribute: nickname
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /docs
+    csrf:
+      enabled: true
+      cookie-name: "XSRF-TOKEN"
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.boot.autoconfigure.security.servlet: DEBUG
+    org.springframework.boot.actuate.endpoint.web: DEBUG
