@@ -14,7 +14,9 @@ object WorldMap: Table("maps") {
     // 地图自增 ID，数字形式
     val id = integer("id").autoIncrement()
     // 地图标题
-    val title = varchar("title", MAX_TITLE_LENGTH).index()
+    val title = varchar("title", MAX_TITLE_LENGTH)
+    // 地图索引
+    val title_lower = varchar("title_lower", MAX_TITLE_LENGTH)
     // 地图作者
     val author = varchar("author", MAX_AUTHOR_LENGTH).nullable().index()
     // 上传者的用户 id

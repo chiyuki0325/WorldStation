@@ -31,11 +31,14 @@ class SecurityConfig {
                 authorize("/oauth2/**", permitAll)
                 authorize("/docs/**", permitAll)
                 authorize("/pageNeedsAuth", authenticated)
-                authorize(anyRequest, authenticated)
+                // authorize(anyRequest, authenticated)
+                authorize(anyRequest, permitAll) // 允许所有请求，方便测试
             }
+            /*
             oauth2Login {
                 defaultSuccessUrl("/user", true)
             }
+             */
         }
         return http.build()
     }

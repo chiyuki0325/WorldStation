@@ -2,6 +2,7 @@ create table maps
 (
     id                serial,
     title             varchar(72) not null,
+    title_lower             varchar(72) not null,
     author            varchar(32),
     uploader          integer     not null,
     game_version      integer     not null,
