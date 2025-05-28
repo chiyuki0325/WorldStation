@@ -1,0 +1,25 @@
+.main-column {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: min(99%, 980px);
+  padding: 1em 0;
+  gap: 1em;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.header {
+  justify-content: space-between;
+}
+
+.text-lift {
+  /* 收拾收拾 css 居中对齐毛病 */
+  position: relative;
+  top: -0.02em
+}
