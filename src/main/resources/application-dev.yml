@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: WorldStation
   datasource:
     url: jdbc:postgresql://host.home.chyk.ink:15432/station
     username: station
