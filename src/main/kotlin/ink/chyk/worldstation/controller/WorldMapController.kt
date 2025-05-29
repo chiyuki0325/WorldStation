@@ -3,6 +3,8 @@ package ink.chyk.worldstation.controller
 import ink.chyk.worldstation.dto.*
 import ink.chyk.worldstation.enum.GameVersion
 import ink.chyk.worldstation.repository.WorldMapRepository
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -17,7 +19,7 @@ class WorldMapController(private val repository: WorldMapRepository) {
     fun updateWorldMap(@RequestBody worldMapDTO: WorldMapDTO): ApiResponseDTO<Boolean> {
         val successOrNot = repository.updateWorldMap(worldMapDTO)
         if (successOrNot) {
-            return ApiResponseDTO(data = true)
+            return ApiResponseDTO(message = "更新地图信息成功", data = true)
         } else {
             return ApiResponseDTO(code = 404, message = "请求的地图不存在")
         }
@@ -62,5 +64,24 @@ class WorldMapController(private val repository: WorldMapRepository) {
             uploader = uploader
         )
         return ApiResponseDTO(data = worldMaps)
+    }
+
+    @DeleteMapping("/worldmap/{id}")
+    fun deleteWorldMap(
+        @PathVariable id: Int,
+        @AuthenticationPrincipal principal: OAuth2User
+    ): ApiResponseDTO<Boolean> {
+        val worldMapUploader = repository.getWorldMapById(id)?.uploader
+            ?: return ApiResponseDTO(code = 404, message = "请求的地图不存在")
+        // 检查地图是否属于当前用户
+        if (worldMapUploader != principal.getAttribute<Int>("id")) {
+            return ApiResponseDTO(code = 403, message = "您没有权限删除该地图")
+        }
+        val successOrNot = repository.deleteWorldMapById(id)
+        return if (successOrNot) {
+            ApiResponseDTO(message = "删除成功", data = true)
+        } else {
+            ApiResponseDTO(code = 404, message = "请求的地图不存在")
+        }
     }
 }
