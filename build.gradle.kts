@@ -38,6 +38,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
+    // 流式 API
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
     // Exposed
     implementation("org.jetbrains.exposed:exposed-core:1.0.0-beta-2")
     implementation("org.jetbrains.exposed:exposed-jdbc:1.0.0-beta-2")
