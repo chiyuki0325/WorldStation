@@ -22,9 +22,10 @@ const isDark = useDark()
   z-index: -1;
   height: 100vh;
   width: max-content;
-  animation: scrollBackground 60s linear infinite;
   display: flex;
   flex-direction: row;
+  /* 白天背景图的宽度，是夜晚背景图的二倍 */
+  animation: scrollBackground 160s linear infinite;
 }
 
 .background-image > img {
@@ -34,6 +35,13 @@ const isDark = useDark()
   -webkit-user-select: none;
   user-select: none;
   pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .scrolling-background {
+    /* 夜晚背景图的宽度要更窄一些 */
+    animation: scrollBackground 80s linear infinite;
+  }
 }
 
 
