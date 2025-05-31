@@ -25,6 +25,7 @@ class ContentTypeUtils {
                 "zst" -> "application/x-zstd"
                 "rar" -> "application/x-rar-compressed"
                 "7z" -> "application/x-7z-compressed"
+                "exe" -> "application/x-ms-dos-executable"
                 else -> null  // 不支持的地图文件类型
             }
         }
