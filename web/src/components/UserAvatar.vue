@@ -8,18 +8,18 @@ const loading = ref(true)
 const clickToLogin = ref(false)
 
 onMounted(() => {
-  fetch("/api/user").then(res => {
+  fetch("/api/user", {redirect: "manual"}).then(res => {
     loading.value = false
-    if (res.redirected) {
-      // 如果是游客，这个 api 会返回 302
-      loginUrl.value = res.url
-    } else if (res.ok) {
+    if (res.ok) {
       res.json().then(data =>{
         avatarUrl.value = data.avatar_url || "/unknown.png"
         nickname.value = data.nickname || "点击登录"
       })
     } else {
-      console.error("获取用户信息失败:", res.status, res.statusText)
+      // 如果是游客，这个 api 会返回 302
+      loginUrl.value = res.url || res.headers.get("Location") || "/login"
+      nickname.value = "点击登录"
+      clickToLogin.value = true
     }
   })
 })
@@ -32,13 +32,12 @@ const login = () => {
 </script>
 
 <template>
-  <div class="user-avatar">
+  <div class="user-avatar" :class="{'click-to-login': clickToLogin}" @click="login">
     <img
         class="avatar no-drag"
         :src="avatarUrl"
         alt="头像"
-        :class="{'loading': loading, 'click-to-login': clickToLogin}"
-        @click="login"
+        :class="{'loading': loading}"
         @error="avatarUrl = '/unknown.png'"
         v-tooltip.left="nickname"
     />

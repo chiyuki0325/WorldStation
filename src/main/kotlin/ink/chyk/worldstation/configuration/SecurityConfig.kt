@@ -7,6 +7,8 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
+import org.springframework.security.web.util.matcher.RegexRequestMatcher
+import org.springframework.security.web.util.matcher.RequestMatcher
 
 
 private const val DEBUG_DISABLE_WEB_SECURITY = false
@@ -29,6 +31,8 @@ class SecurityConfig {
             }
             authorizeHttpRequests {
                 authorize("/", permitAll)
+                authorize(RegexRequestMatcher("/api/worldmaps", "GET"), permitAll)
+                authorize(RegexRequestMatcher("/api/versions", "GET"), permitAll)
                 authorize("/login/**", permitAll)
                 authorize("/oauth2/**", permitAll)
                 authorize("/docs/**", permitAll)
@@ -39,7 +43,7 @@ class SecurityConfig {
             }
             if (!DEBUG_DISABLE_WEB_SECURITY) {
                 oauth2Login {
-                    defaultSuccessUrl("/api/user", true)
+                    defaultSuccessUrl("/", true)
                 }
             }
         }

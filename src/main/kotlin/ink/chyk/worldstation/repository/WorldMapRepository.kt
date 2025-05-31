@@ -53,11 +53,11 @@ class WorldMapRepository {
         versions: List<GameVersion>? = null
     ) = transaction {
         WorldMap.selectAll().apply {
-            if (versions != null && versions.isNotEmpty()) {
+            if (!versions.isNullOrEmpty()) {
                 where { WorldMap.gameVersion inList versions }
             }
-            if (uploader != null) {
-                where { WorldMap.uploader eq uploader }
+            uploader?.let {
+                where { WorldMap.uploader eq it }
             }
             if (query != null && query.isNotBlank()) {
                 // title_lower 列具有 trgm 索引，因此 like 的效率不会很差
