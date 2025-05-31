@@ -42,3 +42,5 @@ logging:
 onedrive:
   alist: https://assets2.station.chyk.ink
   alist-token: alist-***REMOVED***
+  worldmap-path: /station
+  picbed-path: /picbed

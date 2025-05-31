@@ -8,4 +8,6 @@ import org.springframework.stereotype.Component
 class OneDriveConfig {
     var alist: String? = null
     var alistToken: String? = null
+    var worldmapPath: String? = null
+    var picbedPath: String? = null
 }

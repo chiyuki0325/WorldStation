@@ -9,6 +9,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
 
 
+private const val DEBUG_DISABLE_WEB_SECURITY = false
+
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
@@ -22,7 +24,7 @@ class SecurityConfig {
 
         http {
             csrf {
-                csrfTokenRepository  = CookieCsrfTokenRepository.withHttpOnlyFalse()
+                csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse()
                 csrfTokenRequestHandler = requestHandler
             }
             authorizeHttpRequests {
@@ -31,14 +33,16 @@ class SecurityConfig {
                 authorize("/oauth2/**", permitAll)
                 authorize("/docs/**", permitAll)
                 authorize("/pageNeedsAuth", authenticated)
-                // authorize(anyRequest, authenticated)
-                authorize(anyRequest, permitAll) // 允许所有请求，方便测试
+                if (DEBUG_DISABLE_WEB_SECURITY)
+                    authorize(anyRequest, permitAll) // 允许所有请求，方便测试
+                else
+                    authorize(anyRequest, authenticated) // 需要认证的请求
             }
-            /*
-            oauth2Login {
-                defaultSuccessUrl("/user", true)
+            if (!DEBUG_DISABLE_WEB_SECURITY) {
+                oauth2Login {
+                    defaultSuccessUrl("/user", true)
+                }
             }
-             */
         }
         return http.build()
     }

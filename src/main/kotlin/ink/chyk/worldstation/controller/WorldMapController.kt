@@ -48,7 +48,7 @@ class WorldMapController(private val repository: WorldMapRepository) {
         val versions = versions?.map {
             try {
                 GameVersion.valueOf(it)
-            } catch (e: IllegalArgumentException) {
+            } catch (_: IllegalArgumentException) {
                 return@searchWorldMaps ApiResponseDTO<List<WorldMapDTO>>(
                     code = 400,
                     message = "无效的游戏版本号: $it"

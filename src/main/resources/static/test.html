@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传到 OneDrive</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .upload-container {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .progress-container {
+        margin-top: 20px;
+        display: none;
+      }
+      progress {
+        width: 100%;
+        height: 20px;
+      }
+      #file-info {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+      .error {
+        color: red;
+        margin-top: 10px;
+      }
+      .success {
+        color: green;
+        margin-top: 10px;
+      }
+    </style>
+</head>
+<body>
+<h1>文件上传到 OneDrive</h1>
+
+<div class="upload-container">
+    <h2>选择要上传的文件</h2>
+    <input type="file" id="file-input">
+    <div id="file-info"></div>
+</div>
+
+<div>
+    <label for="upload-kind">上传类型:</label>
+    <select id="upload-kind">
+        <option value="PICBED">图床</option>
+        <option value="WORLDMAP">世界地图</option>
+    </select>
+</div>
+
+<button id="upload-btn" disabled>上传文件</button>
+
+<div class="progress-container" id="progress-container">
+    <p>上传进度:</p>
+    <progress id="upload-progress" value="0" max="100"></progress>
+    <p id="progress-text">0%</p>
+</div>
+
+<div id="status-message"></div>
+
+<script>
+  const fileInput = document.getElementById('file-input');
+  const uploadBtn = document.getElementById('upload-btn');
+  const uploadKind = document.getElementById('upload-kind');
+  const progressContainer = document.getElementById('progress-container');
+  const progressBar = document.getElementById('upload-progress');
+  const progressText = document.getElementById('progress-text');
+  const fileInfo = document.getElementById('file-info');
+  const statusMessage = document.getElementById('status-message');
+
+  let selectedFile = null;
+
+  fileInput.addEventListener('change', (event) => {
+    const files = event.target.files;
+    if (files.length > 0) {
+      selectedFile = files[0];
+      fileInfo.innerHTML = `
+                    已选择文件: <strong>${selectedFile.name}</strong><br>
+                    大小: ${formatFileSize(selectedFile.size)}
+                `;
+      uploadBtn.disabled = false;
+    } else {
+      selectedFile = null;
+      fileInfo.innerHTML = '';
+      uploadBtn.disabled = true;
+    }
+  });
+
+  uploadBtn.addEventListener('click', async () => {
+    if (!selectedFile) {
+      showStatus('请先选择文件', 'error');
+      return;
+    }
+
+    try {
+      uploadBtn.disabled = true;
+      progressContainer.style.display = 'block';
+      progressBar.value = 0;
+      progressText.textContent = '0%';
+
+
+      // 使用 Fetch API 上传文件
+      const response = await uploadFile(selectedFile, uploadKind.value, selectedFile.name);
+
+      if (response.ok) {
+        showStatus('文件上传成功!', 'success');
+      } else {
+        const error = await response.text();
+        showStatus(`上传失败: ${error}`, 'error');
+      }
+    } catch (error) {
+      showStatus(`上传过程中出错: ${error.message}`, 'error');
+      console.error('上传错误:', error);
+    } finally {
+      uploadBtn.disabled = false;
+    }
+  });
+
+  async function uploadFile(file, uploadKind, fileName) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      // 使用 PUT 方法
+      xhr.open('PUT', `/api/onedrive/upload?upload_kind=${uploadKind}&file_name=${fileName}`, true)
+
+
+      function getXsrfToken() {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = cookies[i].trim();
+          // 查找包含 XSRF-TOKEN 的 cookie
+          if (cookie.startsWith('XSRF-TOKEN=')) {
+            return cookie.substring('XSRF-TOKEN='.length, cookie.length);
+          }
+        }
+        return null;
+      }
+
+      const xsrfToken = getXsrfToken();
+
+      // 设置自定义头部
+      xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+      xhr.setRequestHeader('X-XSRF-TOKEN', xsrfToken)
+
+      // 进度处理
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          progressBar.value = percentComplete;
+          progressText.textContent = `${percentComplete}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve({
+            ok: true,
+            status: xhr.status,
+            statusText: xhr.statusText,
+            text: () => Promise.resolve(xhr.responseText)
+          });
+        } else {
+          resolve({
+            ok: false,
+            status: xhr.status,
+            statusText: xhr.statusText,
+            text: () => Promise.resolve(xhr.responseText)
+          });
+        }
+      };
+
+      xhr.onerror = () => {
+        reject(new Error('上传请求失败'));
+      };
+
+      // 发送文件
+      xhr.send(file);
+    });
+  }
+
+  function showStatus(message, type) {
+    statusMessage.textContent = message;
+    statusMessage.className = type;
+  }
+
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+</script>
+</body>
+</html>
