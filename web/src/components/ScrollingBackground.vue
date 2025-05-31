@@ -7,8 +7,8 @@ const isDark = useDark()
 <template>
   <div class="scrolling-background">
     <div class="background-image" v-for="i in 10" :key="i">
-      <img src="/background-dark.png" alt="背景图" v-if="isDark"/>
-      <img src="/background-light.png" alt="背景图" v-else/>
+      <img class="no-drag" src="/background-dark.png" alt="背景图" v-if="isDark"/>
+      <img class="no-drag" src="/background-light.png" alt="背景图" v-else/>
     </div>
   </div>
 </template>
@@ -30,11 +30,6 @@ const isDark = useDark()
 
 .background-image > img {
   height: 100vh;
-  -webkit-user-drag: none;
-  user-drag: none;
-  -webkit-user-select: none;
-  user-select: none;
-  pointer-events: none;
 }
 
 @media (prefers-color-scheme: dark) {

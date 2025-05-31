@@ -11,6 +11,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  image-rendering: crisp-edges;
 }
 
 a {
@@ -23,12 +24,21 @@ a:hover {
 }
 
 body {
+  height: 100%;
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+.no-drag {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
 
 h1 {
@@ -60,7 +70,7 @@ button:focus-visible {
 }
 
 #app {
-  max-width: 1280px;
+  width: min(99%, 1280px);
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
