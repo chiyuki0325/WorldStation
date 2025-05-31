@@ -136,14 +136,18 @@ class OneDriveController(
                     },
                     { response ->
                         // 将响应内容写入输出流
-                        response.body.transferTo(outputStream)
+                        // response.body.transferTo(outputStream)
+
+                        // 改写响应体，写入文件 URL
+                        val directUrl = "$alistUrl/d$uploadPath"
+                        outputStream.write("""{"code": 0, "message": "上传成功", "data": {"url": "$directUrl"}}""".toByteArray())
                         null
                     }
                 )
             }
 
             return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody)
         } catch (e: Exception) {
             logger.error("上传过程中发生错误: ${e.message}", e)

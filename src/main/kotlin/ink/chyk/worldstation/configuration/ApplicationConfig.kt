@@ -12,11 +12,13 @@ class ApplicationConfig {
 
     @Bean
     fun restTemplate(): RestTemplate {
-        val requestFactory = SimpleClientHttpRequestFactory()
-
+        val requestFactory = SimpleClientHttpRequestFactory().apply {
+            setConnectTimeout(1800_000)  // 30分钟
+            setReadTimeout(1800_000)     // 30分钟
+        }
 
         // 配置代理
-        val proxy: Proxy = Proxy(
+        val proxy = Proxy(
             Proxy.Type.HTTP,
             InetSocketAddress("127.0.0.1", 8888)
         )

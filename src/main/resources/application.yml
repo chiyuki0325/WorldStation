@@ -6,9 +6,18 @@ spring:
       enabled: true
       max-file-size: 1024MB
       max-request-size: 1024MB
+  mvc:
+    async:
+      request-timeout: -1
 
 springdoc:
     api-docs:
         enabled: false
     swagger-ui:
         enabled: false
+
+server:
+  tomcat:
+    connection-timeout: 2h
+    keep-alive-timeout: 2h
+    max-swallow-size: -1
