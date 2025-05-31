@@ -3,6 +3,7 @@ package ink.chyk.worldstation.repository
 import ink.chyk.worldstation.dto.WorldMapDTO
 import ink.chyk.worldstation.entity.WorldMap
 import ink.chyk.worldstation.enum.GameVersion
+import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.jdbc.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -74,6 +75,7 @@ class WorldMapRepository {
             if (pageNumber > 0) {
                 offset(pageNumber * pageSize.toLong())
             }
+            orderBy(WorldMap.id to SortOrder.DESC)
         }.map {
             WorldMapDTO.fromEntity(it)
         }

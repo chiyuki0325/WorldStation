@@ -32,7 +32,6 @@ class SecurityConfig {
                 authorize("/login/**", permitAll)
                 authorize("/oauth2/**", permitAll)
                 authorize("/docs/**", permitAll)
-                authorize("/pageNeedsAuth", authenticated)
                 if (DEBUG_DISABLE_WEB_SECURITY)
                     authorize(anyRequest, permitAll) // 允许所有请求，方便测试
                 else
@@ -40,7 +39,7 @@ class SecurityConfig {
             }
             if (!DEBUG_DISABLE_WEB_SECURITY) {
                 oauth2Login {
-                    defaultSuccessUrl("/user", true)
+                    defaultSuccessUrl("/api/user", true)
                 }
             }
         }
