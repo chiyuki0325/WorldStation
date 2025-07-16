@@ -20,12 +20,12 @@ const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
         :src="ver.icon"
         :alt="ver.name"
         class="version-icon no-drag" />
-    <div class="flex-column">
-      <span>
+    <div class="flex-column world-map-details">
+      <span class="ellipsis">
         <strong>{{worldMap.title}}</strong>
         <span v-if="worldMap.author"> by {{worldMap.author}}</span>
       </span>
-      <span>游戏版本: {{ver.name}}</span>
+      <span class="ellipsis">游戏版本: {{ver.name}}</span>
     </div>
     <a class="flex-right-row down"
        :href="worldMap.downloadUrl"
@@ -35,7 +35,7 @@ const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
           :src="down.icon"
           alt="下载"
           class="download-icon no-drag" />
-      <span>
+      <span class="download-text">
         {{ down.name }}
       </span>
     </a>
@@ -53,9 +53,20 @@ const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
   width: 100%;
   border-radius: 8px;
   transition: background-color 100ms ease-in-out;
+  max-width: 100%;
 }
 .world-map-item:hover {
   background-color: #f0f0f05a;
+}
+.world-map-details {
+  min-width: 0;
+  max-width: 100%;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 .flex-column {
   display: flex;
@@ -75,6 +86,17 @@ const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
 }
 .download-icon {
   width: 32px;
+}
+@media (max-width: 600px) {
+  .version-icon {
+    width: 32px;  /* 移动设备上缩小版本图标 */
+  }
+  .download-icon {
+    display: none;  /* 移动设备上隐藏下载图标 */
+  }
+}
+.download-text {
+  white-space: nowrap; /* 中文换个蛋的行 */
 }
 .down {
   color: #1a1a1a;

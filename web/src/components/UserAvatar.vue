@@ -59,6 +59,12 @@ const login = () => {
   height: 48px;
   border-radius: 50%;
 }
+@media (max-width: 600px) {
+  .avatar, .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+}
 .loading {
   animation: loading 2s infinite;
 }

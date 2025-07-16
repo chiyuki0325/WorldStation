@@ -71,7 +71,7 @@ button:focus-visible {
 }
 
 #app {
-  width: min(99%, 1280px);
+  width: min(calc(99% - 4rem), 1280px);
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -87,5 +87,12 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media (max-width: 600px) {
+  #app {
+    width: calc(99% - 2rem);
+    padding: 2rem 1rem 1rem;
   }
 }

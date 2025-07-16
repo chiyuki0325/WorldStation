@@ -34,7 +34,9 @@ import UserAvatar from "./UserAvatar.vue";
 
 @media (max-width: 600px) {
   .forum-logo {
-    height: 48px;
+    height: 40px;
+    position: relative;
+    right: 1rem; /* 移动设备上给头像留出空间 */
   }
 }
 
