@@ -1,9 +1,10 @@
 <script setup>
 import {ref, onMounted} from "vue"
+import {useUrlStore} from "../stores/url.js";
 
 const avatarUrl = ref("/unknown.png")
 const nickname = ref("点击登录")
-const loginUrl = ref("/login")
+const urlStore = useUrlStore()
 const loading = ref(true)
 const clickToLogin = ref(false)
 
@@ -17,7 +18,8 @@ onMounted(() => {
       })
     } else {
       // 如果是游客，这个 api 会返回 302
-      loginUrl.value = res.url || res.headers.get("Location") || "/login"
+      const url = res.url || res.headers.get("Location")
+      if (url !== null) urlStore.setLoginUrl(url)
       nickname.value = "点击登录"
       clickToLogin.value = true
     }
@@ -26,7 +28,7 @@ onMounted(() => {
 
 const login = () => {
   if (clickToLogin.value) {
-    window.location.href = loginUrl.value
+    urlStore.jumpToLogin()
   }
 }
 </script>
