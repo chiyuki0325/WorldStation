@@ -50,6 +50,7 @@ class SecurityConfig {
                     PageRequestMatcher(2)
                 ), permitAll)
                 authorize(PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/api/versions"), permitAll)
+                authorize("/api/motd", permitAll)
                 authorize("/login/**", permitAll)
                 authorize("/oauth2/**", permitAll)
                 authorize("/docs/**", permitAll)
