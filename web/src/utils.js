@@ -26,7 +26,7 @@ const GAME_VERSION_INFO = {
     name: "SMBX 1.3",
     icon: "/smbx-legacy.png"
   },
-  "THEXTECH": {
+  "SMBX_THEXTECH": {
     name: "TheXTech",
     icon: "/thextech.png"
   },

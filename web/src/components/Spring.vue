@@ -48,6 +48,8 @@ const springBoot = () => {
   cursor: pointer;
   opacity: 1;
   transition: transform, opacity 0.3s ease-in-out;
+  user-select: none;
+  z-index: 1000;
 }
 
 .transparent {
