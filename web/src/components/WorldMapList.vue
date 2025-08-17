@@ -82,12 +82,12 @@ const handleScroll = (event) => {
   <div ref="scrollComponent" class="worldmap-list">
     <WorldMapItem v-for="wm in worldMaps" :world-map="wm" :key="wm.id"/>
     <!-- 为了防止某些人的显示器超级无敌大 -->
-    <div v-if="needsLogin">
+    <div v-if="needsLogin" class="load-more">
       <span>
         <a @click="urlStore.jumpToLogin()">登录</a>以查看更多地图
       </span>
     </div>
-    <div v-else>
+    <div v-else class="load-more">
       <span @click="loadMoreWorldMaps" v-if="!scrolledToEnd">
         加载更多地图
       </span>
@@ -100,5 +100,9 @@ const handleScroll = (event) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.load-more {
+  margin: 1em;
+  cursor: pointer;
 }
 </style>

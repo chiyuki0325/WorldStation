@@ -101,4 +101,9 @@ const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
 .down {
   color: #1a1a1a;
 }
+@media (prefers-color-scheme: dark) {
+  .down {
+    color: #f0f0f0;
+  }
+}
 </style>
