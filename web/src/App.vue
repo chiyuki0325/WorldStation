@@ -6,15 +6,14 @@ import MainContent from "./components/MainContent.vue";
 import Spring from "./components/Spring.vue";
 import Footer from "./components/Footer.vue";
 import Motd from "./components/Motd.vue";
+import FilterBar from "./components/FilterBar.vue";
 </script>
 
 <template>
   <ScrollingBackground />
   <Header />
   <Motd />
-  <Semisolid color="white">
-    <strong>TODO: 搜索栏</strong>
-  </Semisolid>
+  <FilterBar />
   <MainContent />
   <Footer />
   <Spring />
