@@ -1,10 +1,12 @@
 <script setup>
 import {ref, onMounted} from "vue"
 import {useUrlStore} from "../stores/url.js";
+import {useUserIdStore} from "../stores/userId.js";
 
 const avatarUrl = ref("/unknown.png")
 const nickname = ref("点击登录")
 const urlStore = useUrlStore()
+const userIdStore = useUserIdStore()
 const loading = ref(true)
 const clickToLogin = ref(false)
 
@@ -15,6 +17,7 @@ onMounted(() => {
       res.json().then(data =>{
         avatarUrl.value = data.avatar_url || "/unknown.png"
         nickname.value = data.nickname || "点击登录"
+        userIdStore.setUserId(data.id)
       })
     } else {
       // 如果是游客，这个 api 会返回 302
@@ -22,6 +25,7 @@ onMounted(() => {
       if (url !== null) urlStore.setLoginUrl(url)
       nickname.value = "点击登录"
       clickToLogin.value = true
+      userIdStore.clearUserId()
     }
   })
 })

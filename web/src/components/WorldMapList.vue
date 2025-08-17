@@ -23,6 +23,10 @@ const filters = defineProps({
   version: {
     type: String,
     default: ""
+  },
+  userId: {
+    type: Number,
+    default: -1
   }
 })
 
@@ -89,11 +93,12 @@ const handleScroll = (event) => {
 
 
 // 2025.8.17: worldMaps 随着 filters 更改逻辑
-watch(() => filters.title, async (newTitle, oldTitle) => await updateFilters(newTitle, oldTitle, filters.version, filters.version))
-watch(() => filters.version, async (newVersion, oldVersion) => await updateFilters(filters.title, filters.title, newVersion, oldVersion))
+watch(() => filters.title, async (newTitle, oldTitle) => await updateFilters(newTitle, oldTitle, filters.version, filters.version, filters.userId, filters.userId))
+watch(() => filters.version, async (newVersion, oldVersion) => await updateFilters(filters.title, filters.title, newVersion, oldVersion, filters.userId, filters.userId))
+watch(() => filters.userId, async (newUserId, oldUserId) => await updateFilters(filters.title, filters.title, filters.version, filters.version, newUserId, oldUserId))
 
-const cacheKeys = []  // ["title+version"]，记录缓存顺序
-const worldMapCache = {}  // {"title+version": worldMaps}，缓存实际内容
+const cacheKeys = []  // ["title+version+userId"]，记录缓存顺序
+const worldMapCache = {}  // {"title+version+userId": worldMaps}，缓存实际内容
 
 function deleteOldCache(limit = 10) {
   // 自动删除最旧的缓存
@@ -103,7 +108,7 @@ function deleteOldCache(limit = 10) {
   }
 }
 
-function buildFilters(title = filters.title, version = filters.version) {
+function buildFilters(title = filters.title, version = filters.version, userId = filters.userId) {
   let filters = ""
   if (title) {
     filters += `&query=${encodeURIComponent(title)}`
@@ -111,13 +116,16 @@ function buildFilters(title = filters.title, version = filters.version) {
   if (version) {
     filters += `&versions=${encodeURIComponent(version)}`
   }
+  if (userId && userId !== -1) {
+    filters += `&uploader=${userId}`
+  }
   return filters
 }
 
-async function updateFilters(newTitle, oldTitle, newVersion, oldVersion) {
-  console.log(`更新地图过滤器: ("${oldTitle}", "${oldVersion}") -> ("${newTitle}", "${newVersion}")`)
-  const oldKey = `${oldTitle}+${oldVersion}`
-  const newKey = `${newTitle}+${newVersion}`
+async function updateFilters(newTitle, oldTitle, newVersion, oldVersion, newUserId, oldUserId) {
+  console.log(`更新地图过滤器: ("${oldTitle}", "${oldVersion}", ${oldUserId}) -> ("${newTitle}", "${newVersion}", ${newUserId})`)
+  const oldKey = `${oldTitle}+${oldVersion}+${oldUserId}`
+  const newKey = `${newTitle}+${newVersion}+${newUserId}`
 
   // 把先前的 worldMaps 存入缓存，之后按下回格时，可显著提升加载速度
   if (!worldMapCache[oldKey]) {
@@ -144,7 +152,7 @@ async function updateFilters(newTitle, oldTitle, newVersion, oldVersion) {
     cacheKeys.push(newKey)
   } else {
     // 否则就重新获取世界地图
-    const filters = buildFilters(newTitle, newVersion)
+    const filters = buildFilters(newTitle, newVersion, newUserId)
     worldMaps.value = await getWorldMaps(0, PAGE_SIZE, filters)
   }
 }

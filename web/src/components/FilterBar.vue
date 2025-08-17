@@ -3,6 +3,7 @@ import Semisolid from "./Semisolid.vue"
 import InputBox from "./InputBox.vue"
 import {onMounted, ref} from "vue"
 import {GAME_VERSION_INFO} from "../utils.js";
+import {useUserIdStore} from "../stores/userId.js";
 
 // refs
 const folded = ref(false)
@@ -10,7 +11,9 @@ const versions = ref([])
 // refs - filters
 const title = ref("")
 const version = ref("")
+const onlyUploader = ref(false)
 
+const userIdStore = useUserIdStore()
 const emit = defineEmits(['applyFilter'])
 
 onMounted(() => {
@@ -43,7 +46,7 @@ function initVersions() {
 }
 
 function applyFilter() {
-  emit('applyFilter', title.value, version.value)
+  emit('applyFilter', title.value, version.value, onlyUploader.value ? userIdStore.userId : -1)
 }
 </script>
 
@@ -69,6 +72,10 @@ function applyFilter() {
             <option value="">全部版本</option>
             <option v-for="v in versions" :key="v" :value="v">{{GAME_VERSION_INFO[v].name }}</option>
           </select>
+        </span>
+        <span v-if="userIdStore.userId !== -1">
+          <input type="checkbox" v-model="onlyUploader" id="onlyUploader" />
+          <label for="onlyUploader">仅显示我上传的地图</label>
         </span>
         <span class="flex-right cursor-click" @click="applyFilter">
           <img src="/apply.png" height="16" width="16" alt="应用筛选"/>

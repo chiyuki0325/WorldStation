@@ -12,10 +12,12 @@ import {ref} from "vue";
 
 const titleFilter = ref("")
 const versionFilter = ref("")
+const userIdFilter = ref(-1)
 
-function applyFilter(title, version) {
+function applyFilter(title, version, userId) {
   titleFilter.value = title
   versionFilter.value = version
+  userIdFilter.value = userId
 }
 
 </script>
@@ -26,7 +28,7 @@ function applyFilter(title, version) {
   <Header />
   <Motd />
   <FilterBar @applyFilter="applyFilter" />
-  <MainContent :title="titleFilter" :version="versionFilter" />
+  <MainContent :title="titleFilter" :version="versionFilter" :userId="userIdFilter" />
   <Footer />
   <Spring />
 </template>
