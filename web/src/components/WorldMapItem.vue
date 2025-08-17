@@ -1,6 +1,6 @@
 <script setup>
 import {GAME_VERSION_INFO, DOWNLOAD_PROVIDER_INFO} from "../utils.js"
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 const {worldMap} = defineProps({
   worldMap: {
@@ -11,26 +11,35 @@ const {worldMap} = defineProps({
 
 const ver = ref(GAME_VERSION_INFO[worldMap.gameVersion])
 const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
+const showDown = ref(false)
+const itemRef = ref(null)
+
+onMounted(() => {
+  itemRef.value?.addEventListener('mouseenter', () => showDown.value = true)
+  itemRef.value?.addEventListener('mouseleave', () => showDown.value = false)
+})
 
 </script>
 
 <template>
-  <div class="world-map-item">
+  <div class="world-map-item" ref="itemRef">
     <img
         :src="ver.icon"
         :alt="ver.name"
         class="version-icon no-drag" />
     <div class="flex-column world-map-details">
       <span class="ellipsis">
-        <strong>{{worldMap.title}}</strong>
+        <a :href="worldMap.downloadUrl"><strong>{{worldMap.title}}</strong></a>
         <span v-if="worldMap.author"> by {{worldMap.author}}</span>
       </span>
       <span class="ellipsis">游戏版本: {{ver.name}}</span>
     </div>
-    <a class="flex-right-row down"
+    <a class="flex-right-row"
        :href="worldMap.downloadUrl"
        target="_blank"
-       rel="noopener noreferrer">
+       rel="noopener noreferrer"
+       v-if="showDown"
+    >
       <img
           :src="down.icon"
           alt="下载"
@@ -98,11 +107,11 @@ const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
 .download-text {
   white-space: nowrap; /* 中文换个蛋的行 */
 }
-.down {
+a {
   color: #1a1a1a;
 }
 @media (prefers-color-scheme: dark) {
-  .down {
+  a {
     color: #f0f0f0;
   }
 }
