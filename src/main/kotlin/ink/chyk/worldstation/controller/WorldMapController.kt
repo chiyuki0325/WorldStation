@@ -41,26 +41,28 @@ class WorldMapController(private val repository: WorldMapRepository) {
         @RequestParam(required = false) query: String? = null,
         @RequestParam(required = false) pageSize: Int = 20,
         @RequestParam(required = false) page: Int = 0,
-        @RequestParam(required = false) versions: List<String>? = null,
+        @RequestParam(required = false) version: String? = null,
         @RequestParam(required = false) uploader: Int? = null
     ): ApiResponseDTO<List<WorldMapDTO>> {
         // 处理游戏版本号
-        val versions = versions?.map {
+        val version = if (version != null) {
             try {
-                GameVersion.valueOf(it)
+                GameVersion.valueOf(version)
             } catch (_: IllegalArgumentException) {
                 return@searchWorldMaps ApiResponseDTO<List<WorldMapDTO>>(
                     code = 400,
-                    message = "无效的游戏版本号: $it"
+                    message = "无效的游戏版本号: $version"
                 )
             }
+        } else {
+            null
         }
         // 查询
         val worldMaps = repository.queryWorldMaps(
             query = query,
             pageSize = pageSize,
             pageNumber = page,
-            versions = versions,
+            version = version,
             uploader = uploader
         )
         return ApiResponseDTO(data = worldMaps)

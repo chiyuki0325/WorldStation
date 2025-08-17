@@ -7,14 +7,26 @@ import Spring from "./components/Spring.vue";
 import Footer from "./components/Footer.vue";
 import Motd from "./components/Motd.vue";
 import FilterBar from "./components/FilterBar.vue";
+
+import {ref} from "vue";
+
+const titleFilter = ref("")
+const versionFilter = ref("")
+
+function applyFilter(title, version) {
+  titleFilter.value = title
+  versionFilter.value = version
+}
+
 </script>
+
 
 <template>
   <ScrollingBackground />
   <Header />
   <Motd />
-  <FilterBar />
-  <MainContent />
+  <FilterBar @applyFilter="applyFilter" />
+  <MainContent :title="titleFilter" :version="versionFilter" />
   <Footer />
   <Spring />
 </template>

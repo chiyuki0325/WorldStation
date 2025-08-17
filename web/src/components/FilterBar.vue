@@ -11,6 +11,8 @@ const versions = ref([])
 const title = ref("")
 const version = ref("")
 
+const emit = defineEmits(['applyFilter'])
+
 onMounted(() => {
   if (window.innerWidth < 600) {
     fold()
@@ -41,7 +43,7 @@ function initVersions() {
 }
 
 function applyFilter() {
-  console.log("Applying filter...")
+  emit('applyFilter', title.value, version.value)
 }
 </script>
 

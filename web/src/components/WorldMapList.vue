@@ -2,7 +2,7 @@
 // 无限滚动的世界地图列表
 // credits: https://learnvue.co/articles/vue-infinite-scrolling
 
-import {ref, onMounted, onUnmounted} from 'vue'
+import {onMounted, onUnmounted, ref, watch} from 'vue'
 import WorldMapItem from "./WorldMapItem.vue";
 import {useUrlStore} from "../stores/url.js";
 
@@ -14,6 +14,18 @@ let currentPage = 0
 let scrolledToEnd = false
 let requestPending = false
 
+// props
+const filters = defineProps({
+  title: {
+    type: String,
+    default: ""
+  },
+  version: {
+    type: String,
+    default: ""
+  }
+})
+
 // stores
 const urlStore = useUrlStore()
 
@@ -22,8 +34,8 @@ const worldMaps = ref([])
 const scrollComponent = ref(null)
 const needsLogin = ref(false)
 
-const getWorldMaps = async (page = 0, pageSize = PAGE_SIZE) => {
-  const result = await fetch(`/api/worldmaps?page=${page}&pageSize=${pageSize}`, {
+const getWorldMaps = async (page = 0, pageSize = PAGE_SIZE, filters = buildFilters()) => {
+  const result = await fetch(`/api/worldmaps?page=${page}&pageSize=${pageSize}${filters}`, {
     redirect: "manual"
   })
   if (result.type.endsWith("redirect") || result.status === 302) {
@@ -75,6 +87,67 @@ const handleScroll = (event) => {
   }
 }
 
+
+// 2025.8.17: worldMaps 随着 filters 更改逻辑
+watch(() => filters.title, async (newTitle, oldTitle) => await updateFilters(newTitle, oldTitle, filters.version, filters.version))
+watch(() => filters.version, async (newVersion, oldVersion) => await updateFilters(filters.title, filters.title, newVersion, oldVersion))
+
+const cacheKeys = []  // ["title+version"]，记录缓存顺序
+const worldMapCache = {}  // {"title+version": worldMaps}，缓存实际内容
+
+function deleteOldCache(limit = 10) {
+  // 自动删除最旧的缓存
+  if (cacheKeys.length > limit) {
+    const keyToDelete = cacheKeys.shift()
+    delete worldMapCache[keyToDelete]
+  }
+}
+
+function buildFilters(title = filters.title, version = filters.version) {
+  let filters = ""
+  if (title) {
+    filters += `&query=${encodeURIComponent(title)}`
+  }
+  if (version) {
+    filters += `&versions=${encodeURIComponent(version)}`
+  }
+  return filters
+}
+
+async function updateFilters(newTitle, oldTitle, newVersion, oldVersion) {
+  console.log(`更新地图过滤器: ("${oldTitle}", "${oldVersion}") -> ("${newTitle}", "${newVersion}")`)
+  const oldKey = `${oldTitle}+${oldVersion}`
+  const newKey = `${newTitle}+${newVersion}`
+
+  // 把先前的 worldMaps 存入缓存，之后按下回格时，可显著提升加载速度
+  if (!worldMapCache[oldKey]) {
+    worldMapCache[oldKey] = worldMaps.value.slice()
+    cacheKeys.push(oldKey)
+    deleteOldCache()
+  }
+
+  // (此时处理 UI
+  worldMaps.value = []
+  scrolledToEnd = false
+  requestPending = false
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+
+  // 之后，如果缓存中有新标题和版本的 worldMaps，就直接使用缓存
+  if (worldMapCache[newKey]) {
+    console.log(`使用缓存的地图: ${newKey}`)
+    worldMaps.value = worldMapCache[newKey]
+    // 更新缓存的顺序
+    cacheKeys.splice(cacheKeys.indexOf(newKey), 1)
+    cacheKeys.push(newKey)
+  } else {
+    // 否则就重新获取世界地图
+    const filters = buildFilters(newTitle, newVersion)
+    worldMaps.value = await getWorldMaps(0, PAGE_SIZE, filters)
+  }
+}
 
 </script>
 

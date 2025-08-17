@@ -50,11 +50,16 @@ class WorldMapRepository {
         pageSize: Int = 20,
         pageNumber: Int = 0,
         uploader: Int? = null,
-        versions: List<GameVersion>? = null
+        version: GameVersion? = null
     ) = transaction {
         WorldMap.selectAll().apply {
+            /*
             if (!versions.isNullOrEmpty()) {
                 where { WorldMap.gameVersion inList versions }
+            }
+             */
+            version?.let {
+                where { WorldMap.gameVersion eq it }
             }
             uploader?.let {
                 where { WorldMap.uploader eq it }
