@@ -114,7 +114,7 @@ function buildFilters(title = filters.title, version = filters.version, userId =
     filters += `&query=${encodeURIComponent(title)}`
   }
   if (version) {
-    filters += `&versions=${encodeURIComponent(version)}`
+    filters += `&version=${encodeURIComponent(version)}`
   }
   if (userId && userId !== -1) {
     filters += `&uploader=${userId}`

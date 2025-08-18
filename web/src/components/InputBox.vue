@@ -9,7 +9,7 @@ const modelValue = ref("")
     class="input-box"
     @keydown.enter="$emit('submit', $event.target.value)"
     v-model="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @input="$emit('update:modelValue', $event.target.value); $emit('input', $event.target.value)"
     />
 </template>
 

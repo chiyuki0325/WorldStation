@@ -7,7 +7,8 @@ import {useUserIdStore} from "../stores/userId.js";
 
 // refs
 const folded = ref(false)
-const versions = ref([])
+const versions = ref([])  // available versions
+const changed = ref(false) // whether the filter has changed and not applied yet
 // refs - filters
 const title = ref("")
 const version = ref("")
@@ -46,8 +47,14 @@ function initVersions() {
 }
 
 function applyFilter() {
+  changed.value = false
   emit('applyFilter', title.value, version.value, onlyUploader.value ? userIdStore.userId : -1)
 }
+
+function setChanged() {
+  changed.value = true
+}
+
 </script>
 
 <template>
@@ -63,23 +70,23 @@ function applyFilter() {
       <div class="flex-row filter-bar">
         <span>
           <strong>标题</strong>
-          <InputBox v-model="title" @submit="applyFilter"/>
+          <InputBox v-model="title" @submit="applyFilter" @input="setChanged" />
         </span>
         <span>
           <strong>版本</strong>
           <img :src="GAME_VERSION_INFO[version].icon" v-if="version" height="16" width="16" alt="版本图标"/>
-          <select v-model="version">
+          <select v-model="version" @change="setChanged">
             <option value="">全部版本</option>
             <option v-for="v in versions" :key="v" :value="v">{{GAME_VERSION_INFO[v].name }}</option>
           </select>
         </span>
         <span v-if="userIdStore.userId !== -1">
-          <input type="checkbox" v-model="onlyUploader" id="onlyUploader" />
+          <input type="checkbox" v-model="onlyUploader" id="onlyUploader" @change="setChanged"/>
           <label for="onlyUploader">仅显示我上传的地图</label>
         </span>
         <span class="flex-right cursor-click" @click="applyFilter">
-          <img src="/apply.png" height="16" width="16" alt="应用筛选"/>
-          <span>应用筛选</span>
+          <img :src="changed ? '/apply-changed.png' : '/apply.png'" height="16" width="16" alt="应用筛选"/>
+          <span :class="changed ? 'underscore' : ''">应用筛选</span>
         </span>
       </div>
     </div>
@@ -108,5 +115,9 @@ function applyFilter() {
 
 .cursor-click {
   cursor: pointer;
+}
+
+.underscore {
+  text-decoration: underline;
 }
 </style>
