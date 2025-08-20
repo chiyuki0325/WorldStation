@@ -3,7 +3,9 @@ import {computed, defineAsyncComponent, ref} from "vue"
 
 const routes = {
   '/': () => import('../views/MapListView.vue'),
-  '/404': () => import('../views/NotFoundView.vue')
+  '/404': () => import('../views/NotFoundView.vue'),
+  '/upload/worldmap': () => import('../views/UploadMapView.vue'),
+  '/upload/image': () => import('../views/UploadImageView.vue'),
 }
 
 export const useRouterStore = defineStore('router', () => {

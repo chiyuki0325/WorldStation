@@ -22,14 +22,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="world-map-item" ref="itemRef">
+  <div class="flex-row world-map-item" ref="itemRef">
     <img
         :src="ver.icon"
         :alt="ver.name"
         class="version-icon no-drag" />
     <div class="flex-column world-map-details">
       <span class="ellipsis">
-        <a :href="worldMap.downloadUrl"><strong>{{worldMap.title}}</strong></a>
+        <a class="ellipsis" :href="worldMap.downloadUrl"><strong>{{worldMap.title}}</strong></a>
         <span v-if="worldMap.author"> by {{worldMap.author}}</span>
       </span>
       <span class="ellipsis">游戏版本: {{ver.name}}</span>
@@ -53,9 +53,6 @@ onMounted(() => {
 
 <style scoped>
 .world-map-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: flex-start;
   gap: 1em;
   padding: 0.5em;
@@ -70,6 +67,7 @@ onMounted(() => {
 .world-map-details {
   min-width: 0;
   max-width: 100%;
+  flex: 1;
 }
 .ellipsis {
   overflow: hidden;
@@ -106,13 +104,5 @@ onMounted(() => {
 }
 .download-text {
   white-space: nowrap; /* 中文换个蛋的行 */
-}
-a {
-  color: #1a1a1a;
-}
-@media (prefers-color-scheme: dark) {
-  a {
-    color: #f0f0f0;
-  }
 }
 </style>

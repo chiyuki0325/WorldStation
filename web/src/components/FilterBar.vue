@@ -4,6 +4,7 @@ import InputBox from "./InputBox.vue"
 import {onMounted, ref} from "vue"
 import {GAME_VERSION_INFO} from "../utils.js";
 import {useUserIdStore} from "../stores/userId.js";
+import {useRouterStore} from "../stores/router.js";
 
 // refs
 const folded = ref(false)
@@ -15,6 +16,7 @@ const version = ref("")
 const onlyUploader = ref(false)
 
 const userIdStore = useUserIdStore()
+const router = useRouterStore()
 const emit = defineEmits(['applyFilter'])
 
 onMounted(() => {
@@ -58,66 +60,59 @@ function setChanged() {
 </script>
 
 <template>
-  <Semisolid color="white">
-    <div class="flex-row">
-      <img src="/pipe.png" height="16" width="16" alt="筛选"/>
-      <strong>筛选地图 ...</strong>
+  <Semisolid color="white" class="filter-bar">
+    <div class="flex-row gap">
+      <a class="flex-row gap-small" @click="router.push('/upload/worldmap')">
+        <img class="img16" src="/to-upload.png" alt="筛选"/>
+        <strong>上传地图</strong>
+      </a>
+      <a class="flex-row gap-small" @click="router.push('/upload/image')">
+        <img class="img16" src="/to-picbed.png" alt="筛选"/>
+        <strong>上传图片</strong>
+      </a>
+      <span>|</span>
+      <span class="flex-row gap-small">
+        <img class="img16" src="/pipe.png" alt="筛选"/>
+        <strong>筛选地图 ...</strong>
+      </span>
       <span class="flex-right" v-if="folded" @click="unfold">展开 ⏷</span>
       <span class="flex-right" v-else @click="fold">收起 ⏶</span>
     </div>
     <div v-if="!folded">
       <hr/>
-      <div class="flex-row filter-bar">
-        <span>
+      <div class="flex-row gap">
+        <span class="flex-row gap-small">
           <strong>标题</strong>
-          <InputBox v-model="title" @submit="applyFilter" @input="setChanged" />
+          <InputBox v-model="title" @submit="applyFilter" @input="setChanged"/>
         </span>
-        <span>
+        <span class="flex-row gap-small">
           <strong>版本</strong>
-          <img :src="GAME_VERSION_INFO[version].icon" v-if="version" height="16" width="16" alt="版本图标"/>
+          <img class="img16" :src="GAME_VERSION_INFO[version].icon" v-if="version" alt="版本图标"/>
           <select v-model="version" @change="setChanged">
             <option value="">全部版本</option>
-            <option v-for="v in versions" :key="v" :value="v">{{GAME_VERSION_INFO[v].name }}</option>
+            <option v-for="v in versions" :key="v" :value="v">{{ GAME_VERSION_INFO[v].name }}</option>
           </select>
         </span>
-        <span v-if="userIdStore.userId !== -1">
+        <span>
           <input type="checkbox" v-model="onlyUploader" id="onlyUploader" @change="setChanged"/>
           <label for="onlyUploader">仅显示我上传的地图</label>
         </span>
-        <span class="flex-right cursor-click" @click="applyFilter">
-          <img :src="changed ? '/apply-changed.png' : '/apply.png'" height="16" width="16" alt="应用筛选"/>
+        <a class="flex-row flex-right gap-small" @click="applyFilter">
+          <img class="img16" :src="changed ? '/apply-changed.png' : '/apply.png'" alt="应用筛选"/>
           <span :class="changed ? 'underscore' : ''">应用筛选</span>
-        </span>
+        </a>
       </div>
     </div>
   </Semisolid>
 </template>
 
 <style scoped>
-.flex-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.8em;
-  flex-wrap: wrap;
-}
-
-.filter-bar > span {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.2em;
-}
-
-.flex-right {
-  margin-left: auto;
-}
-
-.cursor-click {
-  cursor: pointer;
+.filter-bar {
+  transition: height 0.3s ease-in-out;
 }
 
 .underscore {
   text-decoration: underline;
 }
+
 </style>

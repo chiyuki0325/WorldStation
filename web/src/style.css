@@ -100,3 +100,38 @@ button:focus-visible {
 p {
   margin: 0;
 }
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.gap-small {
+  gap: 4px;
+}
+
+.gap {
+  gap: 1em;
+}
+
+.flex-right {
+  margin-left: auto;
+}
+
+.img16 {
+  width: 16px;
+  height: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: inherit;
+}

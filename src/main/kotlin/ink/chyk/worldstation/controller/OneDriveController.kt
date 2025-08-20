@@ -34,11 +34,12 @@ class OneDriveController(
         @RequestParam("upload_kind") uploadKind: UploadFileKind,
         @RequestParam("file_name") fileName: String,
         @AuthenticationPrincipal principal: OAuth2User,
+        @RequestHeader("Content-Type") contentType: String,
         @RequestHeader("Content-Length") contentLength: Long,
         inputStream: InputStream,
     ): ResponseEntity<ApiResponseDTO<Any>> {
         val uploadResult = service.uploadFileStreamToOneDrive(
-            uploadKind, fileName, principal, contentLength, inputStream
+            uploadKind, fileName, principal, contentType, contentLength, inputStream
         )
         return if (uploadResult.isSuccess) {
             ResponseEntity.ok(

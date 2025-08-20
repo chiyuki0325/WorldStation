@@ -43,5 +43,22 @@ class ContentTypeUtils {
                 else -> null  // 不支持的图床文件类型
             }
         }
+
+        fun testContentType(
+            contentType: String,
+            kind: UploadFileKind
+        ): Boolean {
+            return when (kind) {
+                UploadFileKind.WORLDMAP -> contentType in setOf(
+                    "application/zip", "application/gzip", "application/x-zstd",
+                    "application/x-rar-compressed", "application/x-7z-compressed",
+                    "application/x-ms-dos-executable"
+                )
+                UploadFileKind.PICBED -> contentType in setOf(
+                    "image/jpeg", "image/png", "image/gif",
+                    "image/bmp", "image/webp", "image/svg+xml"
+                )
+            }
+        }
     }
 }

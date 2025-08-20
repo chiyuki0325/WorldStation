@@ -54,8 +54,72 @@ const DOWNLOAD_PROVIDER_INFO = {
   }
 }
 
+async function uploadFile(file, uploadKind, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('PUT', `/api/onedrive/upload?upload_kind=${uploadKind}&file_name=${file.name}`, true)
+
+    const xsrfToken = getXsrfToken()
+
+    // 设置自定义头部
+    xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+    xhr.setRequestHeader('X-XSRF-TOKEN', xsrfToken)
+
+    // 进度处理
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = Math.round((event.loaded / event.total) * 100);
+        if (onProgress) {
+          onProgress(percentComplete);
+        }
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve({
+          ok: true,
+          status: xhr.status,
+          statusText: xhr.statusText,
+          text: () => Promise.resolve(xhr.responseText),
+          json: () => {
+            try {
+              return Promise.resolve(JSON.parse(xhr.responseText));
+            } catch (e) {
+              return Promise.reject(new Error('解析JSON失败'));
+            }
+          }
+        });
+      } else {
+        resolve({
+          ok: false,
+          status: xhr.status,
+          statusText: xhr.statusText,
+          text: () => Promise.resolve(xhr.responseText),
+          json: () => {
+            try {
+              return Promise.resolve(JSON.parse(xhr.responseText));
+            } catch (e) {
+              return Promise.reject(new Error('解析JSON失败'));
+            }
+          }
+        });
+      }
+    };
+
+    xhr.onerror = () => {
+      reject(new Error('上传请求失败'));
+    };
+
+    // 发送文件
+    xhr.send(file);
+  });
+}
+
 export {
   getXsrfToken,
   GAME_VERSION_INFO,
-  DOWNLOAD_PROVIDER_INFO
+  DOWNLOAD_PROVIDER_INFO,
+  uploadFile
 }

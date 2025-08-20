@@ -3,6 +3,8 @@ import {ref} from "vue";
 import Motd from "../components/Motd.vue";
 import FilterBar from "../components/FilterBar.vue";
 import WorldMapList from "../components/WorldMapList.vue";
+import {useUserIdStore} from "../stores/userId.js";
+import NotLoggedInWarning from "../components/NotLoggedInWarning.vue";
 
 const titleFilter = ref("")
 const versionFilter = ref("")
@@ -14,11 +16,14 @@ function applyFilter(title, version, userId) {
   userIdFilter.value = userId
 }
 
+const userIdStore = useUserIdStore()
+
 </script>
 
 <template>
   <Motd />
-  <FilterBar @applyFilter="applyFilter" />
+  <FilterBar v-if="userIdStore.userId !== -1" @applyFilter="applyFilter" />
+  <NotLoggedInWarning v-else />
   <WorldMapList :title="titleFilter" :version="versionFilter" :userId="userIdFilter" />
 </template>
 

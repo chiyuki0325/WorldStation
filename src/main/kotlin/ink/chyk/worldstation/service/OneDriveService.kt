@@ -107,6 +107,7 @@ class OneDriveService(
         uploadKind: UploadFileKind,
         fileName: String,
         principal: OAuth2User,
+        contentType: String,
         contentLength: Long,
         inputStream: InputStream
     ): Result<String> {
@@ -114,7 +115,15 @@ class OneDriveService(
         val parentPath = uploadPath.substringBeforeLast("/")
         logger.debug("文件路径: {}", uploadPath)
 
-        val contentType = ContentTypeUtils.guessUploadFileContentType(fileName, uploadKind)
+
+        val contentType = if (contentType == "application/octet-stream") {
+            ContentTypeUtils.guessUploadFileContentType(fileName, uploadKind)
+        } else {
+            if (!ContentTypeUtils.testContentType(contentType, uploadKind)) {
+                logger.warn("不支持的文件类型: {}", contentType)
+                null
+            } else contentType
+        }
         logger.debug("Content-Type: {}", contentType)
 
         if (contentType == null) {
