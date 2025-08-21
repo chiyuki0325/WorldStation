@@ -122,4 +122,10 @@ onMounted(() => {
 .download-text {
   white-space: nowrap; /* 中文换个蛋的行 */
 }
+@media (prefers-color-scheme: light) {
+  * {
+    color: #fff;
+    text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
+  }
+}
 </style>

@@ -95,6 +95,10 @@ button:focus-visible {
     width: calc(99% - 2rem);
     padding: 2rem 1rem 1rem;
   }
+  /* 缩小整体文字大小 */
+  :root {
+    font-size: 0.9em;
+  }
 }
 
 p {
