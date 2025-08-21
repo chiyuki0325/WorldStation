@@ -4,6 +4,7 @@ import ProgressBar from "../components/ProgressBar.vue"
 import UploadBox from "../components/UploadBox.vue"
 import Semisolid from "../components/Semisolid.vue"
 import {useUserIdStore} from "../stores/userId.js";
+import {useRouterStore} from "../stores/router.js";
 import {uploadFile} from "../utils.js";
 import CopyUrl from "../components/CopyUrl.vue";
 
@@ -14,6 +15,7 @@ const url = ref("")
 
 const accept = "image/*"
 
+const router = useRouterStore()
 const userIdStore = useUserIdStore()
 
 function handleFileSelected(f) {
@@ -46,7 +48,7 @@ function startUpload() {
 <template>
   <div class="upload-image-view" v-if="userIdStore.userId !== -1">
     <Semisolid color="blue">
-      <strong>SMBX World 图床</strong>
+      <strong class="flex-row gap-small center"><img src="/to-picbed.png" alt="picbed icon" class="img16" />SMBX World 图床</strong>
       <p>本站提供免费的图片托管服务，支持主流类型的图片格式。</p>
       <p>上传的图片可以通过链接直接访问。</p>
       <strong>注意，请不要上传包含黄暴恐内容、法律法规不允许的内容和侵犯他人权益的内容的图片。</strong>
@@ -80,6 +82,8 @@ function startUpload() {
         <button @click="state = 'idle'">重试</button>
       </div>
 
+
+      <a class="flex-row gap-small center" @click="router.push('/')"><img src="/direct-link.png" alt="pipe icon" class="img16" />返回首页</a>
 
     </Semisolid>
   </div>
