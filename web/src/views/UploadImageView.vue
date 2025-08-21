@@ -30,7 +30,7 @@ function startUpload() {
   state.value = "uploading"
   percent.value = 0
 
-  uploadFile(file.value, "PICBED", p => percent.value = p)
+  uploadFile(file.value, file.value.name,"PICBED", p => percent.value = p)
     .then(response => response.json())
     .then(data => {
       if (data.code === 0) {

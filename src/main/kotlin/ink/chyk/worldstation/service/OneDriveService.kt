@@ -45,10 +45,11 @@ class OneDriveService(
                 // 配置中设置的世界地图文件夹
                 var path = config.worldmapPath ?: throw IllegalArgumentException("Worldmap path is not configured")
 
-                // 根据文件名的首字母分类存储
-                path += if (fileName[0].isLetter()) {
-                    "/${fileName[0].uppercaseChar()}"
-                } else if (fileName[0].isDigit()) {
+                // 根据标题的首字母分类存储
+                val title = fileName.substringAfter(']').trim() // 去掉可能的前缀
+                path += if (title[0].isLetter()) {
+                    "/${title[0].uppercaseChar()}"
+                } else if (title[0].isDigit()) {
                     "/0-9"
                 } else {
                     "/Others"
@@ -96,6 +97,20 @@ class OneDriveService(
             String::class.java,
         )
         logger.debug("刷新文件系统响应: {}", resp.body)
+    }
+
+    private fun removeFile(path: String) {
+        val path = path.trim('/')
+        var parent = path.substringBeforeLast('/')
+        if (!parent.startsWith('/')) parent = "/$parent"
+        val filename = path.substringAfterLast('/')
+        val headers = alistHttpHeaders()
+        val request = HttpEntity("""{"dir": "$parent", "names": ["$filename"]}""", headers)
+        client.postForEntity(
+            "$alistUrl/api/fs/remove",
+            request,
+            String::class.java
+        )
     }
 
     fun limitPicbedContentLength(contentLength: Long): Boolean {
@@ -171,6 +186,18 @@ class OneDriveService(
         } catch (e: Exception) {
             logger.error("上传过程中发生错误: ${e.message}", e)
             Result.failure(e)
+        }
+    }
+
+    fun tryRemoveByUrl(fileUrl: String): Boolean {
+        // extract path from URL
+        val path = fileUrl.substringAfterLast(alistUrl).substringAfter("/d")
+        try {
+            removeFile(path)
+            return true
+        } catch (e: Exception) {
+            logger.error("删除文件时发生错误: ${e.message}", e)
+            return false
         }
     }
 }

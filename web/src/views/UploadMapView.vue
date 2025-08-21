@@ -64,10 +64,12 @@ function startUpload() {
     alert("请先填写完整信息，并选择一个文件")
     return
   }
+  const ext = file.value.name.split('.').pop()
+  const filename = '[' + GAME_VERSION_INFO[version.value].short + '] ' +  title.value.trim() + (ext ? ('.' + ext) : '')
   state.value = "uploading"
   percent.value = 0
 
-  uploadFile(file.value, "WORLDMAP", p => percent.value = p)
+  uploadFile(file.value, filename, "WORLDMAP", p => percent.value = p)
       .then(response => response.json())
       .then(data => {
         if (data.code === 0) {

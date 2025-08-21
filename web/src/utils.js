@@ -8,30 +8,37 @@ const getXsrfToken = () => {
 const GAME_VERSION_INFO = {
   "SMBX_38A_145": {
     name: "SMBX-38A 1.4.5",
+    short: "1.4.5",
     icon: "/smbx-38a.png"
   },
   "SMBX_38A_144": {
     name: "SMBX-38A 1.4.4",
+    short: "1.4.4",
     icon: "/smbx-38a.png"
   },
   "SMBX_38A_OTHERS": {
     name: "SMBX-38A 早期版本",
+    short: "1.4.x",
     icon: "/smbx-38a.png"
   },
   "SMBX_2_0": {
     name: "SMBX 2.0",
+    short: "2.0",
     icon: "/smbx2.png"
   },
   "SMBX_1_3": {
     name: "SMBX 1.3",
+    short: "1.3",
     icon: "/smbx-legacy.png"
   },
   "SMBX_THEXTECH": {
     name: "TheXTech",
+    short: "TheXTech",
     icon: "/thextech.png"
   },
   "UNKNOWN": {
     name: "未知版本",
+    short: "未知版本",
     icon: "/unknown-version.png"
   },
 }
@@ -54,13 +61,13 @@ const DOWNLOAD_PROVIDER_INFO = {
   }
 }
 
-async function uploadFile(file, uploadKind, onProgress) {
+async function uploadFile(file, fileName, uploadKind, onProgress) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
-    const filename = encodeURIComponent(file.name);
+    const filename = encodeURIComponent(fileName);
 
-    xhr.open('PUT', `/api/onedrive/upload?upload_kind=${uploadKind}&file_name=${filename  }`, true)
+    xhr.open('PUT', `/api/onedrive/upload?upload_kind=${uploadKind}&file_name=${filename}`, true)
 
     const xsrfToken = getXsrfToken()
 

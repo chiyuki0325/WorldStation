@@ -1,7 +1,9 @@
 <script setup>
-import {ref} from 'vue'
-const modelValue = ref("")
 const props = defineProps({
+  modelValue: {
+    type: String,
+    default: '',
+  },
   id: {
     type: String,
     default: '',
@@ -11,18 +13,20 @@ const props = defineProps({
     default: () => ({}),
   },
 })
+
+const emit = defineEmits(['update:modelValue', 'submit', 'input'])
 </script>
 
 <template>
   <input
-    type="text"
-    :id="props.id"
-    class="input-box"
-    @keydown.enter="$emit('submit', $event.target.value)"
-    v-model="modelValue"
-    @input="$emit('update:modelValue', $event.target.value); $emit('input', $event.target.value)"
-    :style="props.style"
-    />
+      type="text"
+      :id="props.id"
+      class="input-box"
+      :value="props.modelValue"
+      @input="e => { emit('update:modelValue', e.target.value); emit('input', e.target.value) }"
+      @keydown.enter="emit('submit', $event.target.value)"
+      :style="props.style"
+  />
 </template>
 
 <style scoped>

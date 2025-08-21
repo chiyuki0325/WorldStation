@@ -18,13 +18,13 @@ class ApplicationConfig {
         }
 
         // 配置代理
-        /*
+
         val proxy = Proxy(
             Proxy.Type.HTTP,
             InetSocketAddress("127.0.0.1", 8888)
         )
         requestFactory.setProxy(proxy)
-         */
+
 
 
         return RestTemplate(requestFactory)

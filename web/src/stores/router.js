@@ -6,15 +6,16 @@ const routes = {
   '/404': () => import('../views/NotFoundView.vue'),
   '/upload/worldmap': () => import('../views/UploadMapView.vue'),
   '/upload/image': () => import('../views/UploadImageView.vue'),
+  '/edit': () => import('../views/EditMapView.vue'),
 }
 
 export const useRouterStore = defineStore('router', () => {
   // 高端万兆企业级路由器
   // powered by 威优易(TM)
-  const route = ref(window.location.pathname)
+  const route = ref(window.location.pathname + window.location.search)
 
   const view = computed(() => {
-    const componentLoader = routes[route.value] || routes['/404']
+    const componentLoader = routes[route.value.split('?')[0]] || routes['/404']
     return defineAsyncComponent({
       loader: componentLoader,
       errorComponent: routes['/404'],
@@ -24,7 +25,7 @@ export const useRouterStore = defineStore('router', () => {
 
   function push(path) {
     if (path !== route.value) {
-      if (routes[path]) {
+      if (routes[path.split('?')[0]]) {
         window.history.pushState({}, '', path)
         route.value = path
       } else {

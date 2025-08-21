@@ -1,6 +1,8 @@
 <script setup>
 import {GAME_VERSION_INFO, DOWNLOAD_PROVIDER_INFO} from "../utils.js"
 import {onMounted, ref} from "vue";
+import {useUserIdStore} from "../stores/userId.js";
+import {useRouterStore} from "../stores/router.js";
 
 const {worldMap} = defineProps({
   worldMap: {
@@ -8,6 +10,9 @@ const {worldMap} = defineProps({
     required: true
   }
 });
+
+const router = useRouterStore();
+const userIdStore = useUserIdStore();
 
 const ver = ref(GAME_VERSION_INFO[worldMap.gameVersion])
 const down = ref(DOWNLOAD_PROVIDER_INFO[worldMap.downloadProvider])
@@ -34,6 +39,18 @@ onMounted(() => {
       </span>
       <span class="ellipsis">游戏版本: {{ver.name}}</span>
     </div>
+    <a class="flex-right-row"
+       v-if="userIdStore.userId === worldMap.uploader && showDown"
+       @click="router.push('/edit?id=' + worldMap.id)"
+    >
+      <img
+          src="/qblock.gif"
+          alt="编辑信息"
+          class="download-icon no-drag" />
+      <span class="download-text">
+        编辑信息
+      </span>
+    </a>
     <a class="flex-right-row"
        :href="worldMap.downloadUrl"
        target="_blank"
