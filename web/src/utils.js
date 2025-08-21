@@ -58,7 +58,9 @@ async function uploadFile(file, uploadKind, onProgress) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `/api/onedrive/upload?upload_kind=${uploadKind}&file_name=${file.name}`, true)
+    const filename = encodeURIComponent(file.name);
+
+    xhr.open('PUT', `/api/onedrive/upload?upload_kind=${uploadKind}&file_name=${filename  }`, true)
 
     const xsrfToken = getXsrfToken()
 

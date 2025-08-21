@@ -15,14 +15,27 @@ const emits = defineEmits(['file'])
 
 function testAccept(mime) {
   let accept = props.accept
-  if (accept.startsWith('*')) {
-    return true
-  } else if (accept.endsWith('*')) {
-    accept = accept.slice(0, -1)  // 去掉末尾的星号
-  } else if (accept.startsWith('.')) {
-    accept = accept.slice(1)
+  if (accept.includes('/')) {
+    // 处理 MIME 类型
+    for (let ac of accept.split(',')) {
+      ac = ac.trim()
+      if (ac.startsWith('*')) {
+        return true
+      } else if (ac.endsWith('*')) {
+        ac = ac.slice(0, -1)  // 去掉末尾的星号
+      } else if (ac.startsWith('.')) {
+        ac = ac.slice(1)
+      }
+      if (mime.startsWith(ac) || mime.endsWith(ac)) {
+        return true
+      }
+    }
+    return false
+  } else {
+    // 处理扩展名
+    const ext = mime.split('/')[1] || ''
+    return accept.split(',').some(a => a.trim() === `.${ext}` || a.trim() === ext)
   }
-  return mime.startsWith(accept) || mime.endsWith(accept)
 }
 
 onMounted(() => {

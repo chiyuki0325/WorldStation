@@ -2,7 +2,13 @@
 
 // credits: Super Mario Bros. X official website, www.smbxgame.com
 
-const {color} = defineProps(['color'])
+const {color} = defineProps({
+  color: {
+    type: String,
+    default: 'white', // white, blue
+    validator: (value) => ['white', 'blue'].includes(value),
+  },
+})
 
 </script>
 
