@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: station
+      POSTGRES_USER: station
+      POSTGRES_PASSWORD: station_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  alist:
+    image: xhofe/alist:v3.45.0
+    ports:
+      - "5244:5244"
+    volumes:
+      - alist_data:/opt/alist/data
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=022
+    restart: unless-stopped
+
+  app:
+    build: .
+    depends_on:
+      - db
+      - alist
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://host.home.chyk.ink:15432/station"
+      SPRING_DATASOURCE_USERNAME: "station"
+      SPRING_DATASOURCE_PASSWORD: "station_password"
+      OAUTH2_CLIENT_ID: "***REMOVED***"
+      OAUTH2_CLIENT_SECRET: "***REMOVED***"
+      SWAGGER_UI_ENABLED: "true"
+      ONEDRIVE_ALIST: "http://alist:5244"
+      ONEDRIVE_ALIST_TOKEN: "alist-***REMOVED***"
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  alist_data:
+

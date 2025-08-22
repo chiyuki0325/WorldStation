@@ -45,6 +45,11 @@ class SecurityConfig {
                     authenticated
                 }
                 authorize("/", permitAll)
+                authorize("/index.html", permitAll)
+                authorize("/sw.js", permitAll)
+                authorize("/static-*", permitAll)
+                authorize("/static/**", permitAll)
+                authorize("/assets/**", permitAll)
                 authorize(AndRequestMatcher(
                     PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, "/api/worldmaps"),
                     PageRequestMatcher(2)
