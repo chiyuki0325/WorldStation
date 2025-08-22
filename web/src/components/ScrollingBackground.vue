@@ -7,8 +7,8 @@ const isDark = useDark()
 <template>
   <div class="scrolling-background">
     <div class="background-image" v-for="i in 10" :key="i">
-      <img class="no-drag" src="/background-dark.png" alt="背景图" v-if="isDark"/>
-      <img class="no-drag" src="/background-light.png" alt="背景图" v-else/>
+      <img class="no-drag" src="/static/background-dark.png" alt="背景图" v-if="isDark"/>
+      <img class="no-drag" src="/static/background-light.png" alt="背景图" v-else/>
     </div>
   </div>
 </template>

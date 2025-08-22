@@ -105,7 +105,7 @@ function startUpload() {
 <template>
   <div class="upload-worldmap-view" v-if="userIdStore.userId !== -1">
     <Semisolid color="blue">
-      <strong class="flex-row gap-small center"><img src="/to-upload.png" alt="upload icon"
+      <strong class="flex-row gap-small center"><img src="/static/to-upload.png" alt="upload icon"
                                                      class="img16"/>上传地图</strong>
       <p>在 SMBX World 投稿地图时，可在此上传地图文件。<span
           class="inline-block">上传后会生成一个链接，可在帖子中使用该链接。</span></p>
@@ -122,26 +122,26 @@ function startUpload() {
             请核对后，仔细填写下列信息。
           </p>
           <div class="flex-row gap-small">
-            <img src="/qblock.gif" alt="question block" class="img16"/>
+            <img src="/static/qblock.gif" alt="question block" class="img16"/>
             <label for="title">地图名称：</label>
             <InputBox id="title" v-model="title" :style="{ maxWidth: '200px', width: '100%' }"/>
           </div>
           <div class="flex-row gap-small">
-            <img :src="GAME_VERSION_INFO[version]?.icon || '/unknown.png'" alt="version icon" class="img16"/>
+            <img :src="GAME_VERSION_INFO[version]?.icon || '/static/unknown.png'" alt="version icon" class="img16"/>
             <label for="version">地图版本：</label>
             <select id="version" v-model="version" :style="{ maxWidth: '200px', width: '100%' }">
               <option v-for="v in versions" :key="v" :value="v">{{ GAME_VERSION_INFO[v]?.name || v }}</option>
             </select>
           </div>
           <div class="flex-row gap-small">
-            <img src="/walk.gif" alt="author icon" class="img16"/>
+            <img src="/static/walk.gif" alt="author icon" class="img16"/>
             <label for="author">作者名称：</label>
             <InputBox id="author" v-model="author" :style="{ maxWidth: '200px', width: '100%' }"/>
           </div>
 
           <div v-if="isValid" class="upload-worldmap-details">
             <div class="flex-row gap-small" v-if="file !== null" @click="startUpload">
-              <img src="/star.png" alt="star icon" /><a><strong>填写完毕，开始上传！</strong></a>
+              <img src="/static/star.png" alt="star icon" /><a><strong>填写完毕，开始上传！</strong></a>
             </div>
           </div>
         </div>
@@ -173,7 +173,7 @@ function startUpload() {
       </div>
 
 
-      <a class="flex-row gap-small center" @click="router.push('/')"><img src="/direct-link.png" alt="pipe icon" class="img16" />返回首页</a>
+      <a class="flex-row gap-small center" @click="router.push('/')"><img src="/static/direct-link.png" alt="pipe icon" class="img16" />返回首页</a>
     </Semisolid>
   </div>
   <div class="upload-image-view" v-else>

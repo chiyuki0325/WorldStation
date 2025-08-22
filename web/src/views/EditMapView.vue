@@ -137,7 +137,7 @@ function deleteMap() {
 <template>
   <div class="edit-map-view" v-if="!loading && map !== null && map.uploader === userIdStore.userId">
     <Semisolid color="blue">
-      <strong class="flex-row gap-small center"><img src="/qblock.gif" alt="edit icon"
+      <strong class="flex-row gap-small center"><img src="/static/qblock.gif" alt="edit icon"
                                                      class="img16"/>编辑地图信息</strong>
       <p>这里可以编辑你上传的地图的信息。</p>
       <p>如果需要更换地图文件，请删除当前地图并重新上传。</p>
@@ -149,53 +149,53 @@ function deleteMap() {
           请核对后，仔细填写下列信息。
         </p>
         <div class="flex-row gap-small">
-          <img src="/qblock.gif" alt="question block" class="img16"/>
+          <img src="/static/qblock.gif" alt="question block" class="img16"/>
           <label for="title">地图名称：</label>
           <InputBox id="title" v-model="title" :style="{ maxWidth: '200px', width: '100%' }"/>
         </div>
         <div class="flex-row gap-small">
-          <img :src="GAME_VERSION_INFO[version]?.icon || '/unknown.png'" alt="version icon" class="img16"/>
+          <img :src="GAME_VERSION_INFO[version]?.icon || '/static/unknown.png'" alt="version icon" class="img16"/>
           <label for="version">地图版本：</label>
           <select id="version" v-model="version" :style="{ maxWidth: '200px', width: '100%' }">
             <option v-for="v in versions" :key="v" :value="v">{{ GAME_VERSION_INFO[v]?.name || v }}</option>
           </select>
         </div>
         <div class="flex-row gap-small">
-          <img src="/walk.gif" alt="author icon" class="img16"/>
+          <img src="/static/walk.gif" alt="author icon" class="img16"/>
           <label for="author">作者名称：</label>
           <InputBox id="author" v-model="author" :style="{ maxWidth: '200px', width: '100%' }"/>
         </div>
 
         <div class="flex-row gap">
           <div class="flex-row gap-small" v-if="isValid" @click="apply">
-            <img src="/star.png" alt="star icon" class="img16"/><a><strong>应用修改</strong></a>
+            <img src="/static/star.png" alt="star icon" class="img16"/><a><strong>应用修改</strong></a>
           </div>
           <div class="flex-row gap-small" @click="deleteMap">
-            <img src="/koopa.gif" alt="koopa troopa icon" style="height: 16px"/><a><strong>删除地图</strong></a>
+            <img src="/static/koopa.gif" alt="koopa troopa icon" style="height: 16px"/><a><strong>删除地图</strong></a>
           </div>
         </div>
 
       </div>
-      <a class="flex-row gap-small center" @click="router.push('/')"><img src="/direct-link.png" alt="pipe icon" class="img16" />返回首页</a>
+      <a class="flex-row gap-small center" @click="router.push('/')"><img src="/static/direct-link.png" alt="pipe icon" class="img16" />返回首页</a>
 
     </Semisolid>
   </div>
   <div v-else-if="loading">
     <Semisolid color="white">
-      <strong class="flex-row gap-small center"><img src="/walk.gif" alt="loading icon"
+      <strong class="flex-row gap-small center"><img src="/static/walk.gif" alt="loading icon"
                                                      class="img16"/>加载中...</strong>
       <p>正在加载地图信息，请稍候。</p>
     </Semisolid>
   </div>
   <div v-else-if="map === null">
     <Semisolid color="blue">
-      <strong class="flex-row gap-small center"><img src="/apply-changed.png" alt="error icon" class="img16"/>无法编辑地图信息</strong>
+      <strong class="flex-row gap-small center"><img src="/static/apply-changed.png" alt="error icon" class="img16"/>无法编辑地图信息</strong>
       <p>未找到指定的地图，请检查链接是否正确。</p>
     </Semisolid>
   </div>
   <div v-else>
     <Semisolid color="red">
-      <strong class="flex-row gap-small center"><img src="/apply-changed.png" alt="error icon" class="img16"/>无法编辑地图信息</strong>
+      <strong class="flex-row gap-small center"><img src="/static/apply-changed.png" alt="error icon" class="img16"/>无法编辑地图信息</strong>
       <p v-if="userIdStore.userId === -1">你尚未登录，请先登录后再尝试。</p>
       <p v-else>你无权编辑此地图的信息，可能的原因包括但不限于：<br/>1. 该地图并非由你上传；<br/>2. 地图不存在或已被删除。
       </p>
@@ -204,10 +204,6 @@ function deleteMap() {
 </template>
 
 <style scoped>
-
-.inline-block {
-  display: inline-block;
-}
 
 .upload-worldmap-details {
   display: flex;

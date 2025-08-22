@@ -69,62 +69,62 @@ const {color} = defineProps({
   }
 
   .top-left-white {
-    background-image: url('/ss-w/wtl.png');
+    background-image: url('/static/ss-w/wtl.png');
   }
   .top-center-white {
-    background-image: url('/ss-w/wtc.png');
+    background-image: url('/static/ss-w/wtc.png');
   }
   .top-right-white {
-    background-image: url('/ss-w/wtr.png');
+    background-image: url('/static/ss-w/wtr.png');
   }
   .middle-left-white {
-    background-image: url('/ss-w/wml.png');
+    background-image: url('/static/ss-w/wml.png');
   }
   .middle-center-white {
     background-color: rgb(224, 224, 224);
   }
   .middle-right-white {
-    background-image: url('/ss-w/wmr.png');
+    background-image: url('/static/ss-w/wmr.png');
   }
   .bottom-left-white {
-    background-image: url('/ss-w/wbl.png');
+    background-image: url('/static/ss-w/wbl.png');
   }
   .bottom-center-white {
-    background-image: url('/ss-w/wbc.png');
+    background-image: url('/static/ss-w/wbc.png');
   }
   .bottom-right-white {
-    background-image: url('/ss-w/wbr.png');
+    background-image: url('/static/ss-w/wbr.png');
   }
   .middle-center-white > * {
     color: black;
   }
 
   .top-left-blue {
-    background-image: url('/ss-b/btl.png');
+    background-image: url('/static/ss-b/btl.png');
   }
   .top-center-blue {
-    background-image: url('/ss-b/btc.png');
+    background-image: url('/static/ss-b/btc.png');
   }
   .top-right-blue {
-    background-image: url('/ss-b/btr.png');
+    background-image: url('/static/ss-b/btr.png');
   }
   .middle-left-blue {
-    background-image: url('/ss-b/bml.png');
+    background-image: url('/static/ss-b/bml.png');
   }
   .middle-center-blue {
     background-color: rgb(88, 200, 248)
   }
   .middle-right-blue {
-    background-image: url('/ss-b/bmr.png');
+    background-image: url('/static/ss-b/bmr.png');
   }
   .bottom-left-blue {
-    background-image: url('/ss-b/bbl.png');
+    background-image: url('/static/ss-b/bbl.png');
   }
   .bottom-center-blue {
-    background-image: url('/ss-b/bbc.png');
+    background-image: url('/static/ss-b/bbc.png');
   }
   .bottom-right-blue {
-    background-image: url('/ss-b/bbr.png');
+    background-image: url('/static/ss-b/bbr.png');
   }
   .middle-center-blue > * {
     color: black;

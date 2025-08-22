@@ -44,7 +44,7 @@ onMounted(() => {
        @click="router.push('/edit?id=' + worldMap.id)"
     >
       <img
-          src="/qblock.gif"
+          src="/static/qblock.gif"
           alt="编辑信息"
           class="download-icon no-drag" />
       <span class="download-text">

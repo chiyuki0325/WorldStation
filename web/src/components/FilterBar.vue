@@ -63,16 +63,16 @@ function setChanged() {
   <Semisolid color="white" class="filter-bar">
     <div class="flex-row gap">
       <a class="flex-row gap-small" @click="router.push('/upload/worldmap')">
-        <img class="img16" src="/to-upload.png" alt="筛选"/>
+        <img class="img16" src="/static/to-upload.png" alt="筛选"/>
         <strong>上传地图</strong>
       </a>
       <a class="flex-row gap-small" @click="router.push('/upload/image')">
-        <img class="img16" src="/to-picbed.png" alt="筛选"/>
+        <img class="img16" src="/static/to-picbed.png" alt="筛选"/>
         <strong>上传图片</strong>
       </a>
       <span>|</span>
       <span class="flex-row gap-small">
-        <img class="img16" src="/pipe.png" alt="筛选"/>
+        <img class="img16" src="/static/pipe.png" alt="筛选"/>
         <strong>筛选地图 ...</strong>
       </span>
       <span class="flex-right" v-if="folded" @click="unfold">展开 ⏷</span>
@@ -98,7 +98,7 @@ function setChanged() {
           <label for="onlyUploader">仅显示我上传的地图</label>
         </span>
         <a class="flex-row flex-right gap-small" @click="applyFilter">
-          <img class="img16" :src="changed ? '/apply-changed.png' : '/apply.png'" alt="应用筛选"/>
+          <img class="img16" :src="changed ? '/static/apply-changed.png' : '/static/apply.png'" alt="应用筛选"/>
           <span :class="changed ? 'underscore' : ''">应用筛选</span>
         </a>
       </div>

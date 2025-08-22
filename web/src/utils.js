@@ -9,54 +9,54 @@ const GAME_VERSION_INFO = {
   "SMBX_38A_145": {
     name: "SMBX-38A 1.4.5",
     short: "1.4.5",
-    icon: "/smbx-38a.png"
+    icon: "/static/smbx-38a.png"
   },
   "SMBX_38A_144": {
     name: "SMBX-38A 1.4.4",
     short: "1.4.4",
-    icon: "/smbx-38a.png"
+    icon: "/static/smbx-38a.png"
   },
   "SMBX_38A_OTHERS": {
     name: "SMBX-38A 早期版本",
     short: "1.4.x",
-    icon: "/smbx-38a.png"
+    icon: "/static/smbx-38a.png"
   },
   "SMBX_2_0": {
     name: "SMBX 2.0",
     short: "2.0",
-    icon: "/smbx2.png"
+    icon: "/static/smbx2.png"
   },
   "SMBX_1_3": {
     name: "SMBX 1.3",
     short: "1.3",
-    icon: "/smbx-legacy.png"
+    icon: "/static/smbx-legacy.png"
   },
   "SMBX_THEXTECH": {
     name: "TheXTech",
     short: "TheXTech",
-    icon: "/thextech.png"
+    icon: "/static/thextech.png"
   },
   "UNKNOWN": {
     name: "未知版本",
     short: "未知版本",
-    icon: "/unknown-version.png"
+    icon: "/static/unknown-version.png"
   },
 }
 
 const DOWNLOAD_PROVIDER_INFO = {
   "DIRECT_LINK": {
     name: "下载",
-    icon: "/direct-link.png",
+    icon: "/static/direct-link.png",
     enabled: true
   },
   "THIRD_PARTY_WEBPAGE": {
     name: "跳转到第三方网页下载",
-    icon: "/third-party.png",
+    icon: "/static/third-party.png",
     enabled: true
   },
   "UNKNOWN": {
     name: "不提供下载",
-    icon: "/unknown-download.png",
+    icon: "/static/unknown-download.png",
     enabled: false
   }
 }

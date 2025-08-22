@@ -32,7 +32,7 @@ const springBoot = () => {
 </script>
 
 <template>
-  <img src="/springboot.png" alt="回到顶部" class="spring" :class="{
+  <img src="/static/springboot.png" alt="回到顶部" class="spring" :class="{
     transparent:!display,
     boot: boot
   }" @click="springBoot" />

@@ -3,7 +3,7 @@ import {ref, onMounted} from "vue"
 import {useUrlStore} from "../stores/url.js";
 import {useUserIdStore} from "../stores/userId.js";
 
-const avatarUrl = ref("/unknown.png")
+const avatarUrl = ref("/static/unknown.png")
 const nickname = ref("点击登录")
 const urlStore = useUrlStore()
 const userIdStore = useUserIdStore()
@@ -15,7 +15,7 @@ onMounted(() => {
     loading.value = false
     if (res.ok) {
       res.json().then(data =>{
-        avatarUrl.value = data.avatar_url || "/unknown.png"
+        avatarUrl.value = data.avatar_url || "/static/unknown.png"
         nickname.value = data.nickname || "点击登录"
         userIdStore.setUserId(data.id)
       })
@@ -44,7 +44,7 @@ const login = () => {
         :src="avatarUrl"
         alt="头像"
         :class="{'loading': loading}"
-        @error="avatarUrl = '/unknown.png'"
+        @error="avatarUrl = '/static/unknown.png'"
         v-tooltip.left="nickname"
     />
   </div>

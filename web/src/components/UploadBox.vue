@@ -91,7 +91,7 @@ function handleInput(event) {
 
 <template>
   <div class="upload-box" ref="uploadBox">
-    <img src="/upload-bg.png" alt="Upload Background" class="upload-bg" draggable="false"/>
+    <img src="/static/upload-bg.png" alt="Upload Background" class="upload-bg" draggable="false"/>
     <p>请把要上传的内容拖入虚线框内，<wbr><span style="display: inline-block">或点击“浏览”按钮选择文件。</span></p>
     <div class="flex-row gap" style="max-width: 80%; overflow: hidden;">
       <input type="file" :accept="props.accept" @change="handleInput" ref="fileInput" />

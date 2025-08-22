@@ -61,20 +61,20 @@ onUnmounted(() => {
 <template>
   <div class="progress-bar-parent" ref="progressBarContainer">
     <div class="walking-parent" :style="characterStyle">
-      <img class="walking" src="/walk.gif" alt="walking character" />
+      <img class="walking" src="/static/walk.gif" alt="walking character" />
     </div>
     <div class="progress-bar">
       <img
           v-for="n in filledCount"
           :key="'filled-' + n"
-          src="/filled.png"
+          src="/static/filled.png"
           alt="filled"
           class="progress-grid"
       />
       <img
           v-for="n in emptyCount"
           :key="'empty-' + n"
-          src="/empty.png"
+          src="/static/empty.png"
           alt="empty"
           class="progress-grid"
       />

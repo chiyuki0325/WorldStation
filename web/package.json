@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^13.3.0",
+    "esbuild": "^0.25.9",
     "floating-vue": "^5.2.2",
     "marked": "^16.0.0",
     "pinia": "^3.0.3",

@@ -48,7 +48,7 @@ function startUpload() {
 <template>
   <div class="upload-image-view" v-if="userIdStore.userId !== -1">
     <Semisolid color="blue">
-      <strong class="flex-row gap-small center"><img src="/to-picbed.png" alt="picbed icon" class="img16" />SMBX World 图床</strong>
+      <strong class="flex-row gap-small center"><img src="/static/to-picbed.png" alt="picbed icon" class="img16" />SMBX World 图床</strong>
       <p>本站提供免费的图片托管服务，支持主流类型的图片格式。</p>
       <p>上传的图片可以通过链接直接访问。</p>
       <strong>注意，请不要上传包含黄暴恐内容、法律法规不允许的内容和侵犯他人权益的内容的图片。</strong>
@@ -58,7 +58,7 @@ function startUpload() {
       <div v-if="state === 'idle'">
         <UploadBox @file="handleFileSelected" :accept="accept">
           <div class="flex-row gap-small" v-if="file !== null" @click="startUpload">
-            <img src="/star.png" alt="star icon" /><strong>开始上传！</strong>
+            <img src="/static/star.png" alt="star icon" /><strong>开始上传！</strong>
           </div>
         </UploadBox>
       </div>
@@ -83,7 +83,7 @@ function startUpload() {
       </div>
 
 
-      <a class="flex-row gap-small center" @click="router.push('/')"><img src="/direct-link.png" alt="pipe icon" class="img16" />返回首页</a>
+      <a class="flex-row gap-small center" @click="router.push('/')"><img src="/static/direct-link.png" alt="pipe icon" class="img16" />返回首页</a>
 
     </Semisolid>
   </div>
