@@ -13,7 +13,11 @@ const fileInput = ref(null)
 
 const emits = defineEmits(['file'])
 
-function testAccept(mime) {
+function testAccept(file) {
+  const mime = file.type || ''
+  if (!mime) {
+    return false
+  }
   let accept = props.accept
   if (accept.includes('/')) {
     // 处理 MIME 类型
@@ -33,7 +37,7 @@ function testAccept(mime) {
     return false
   } else {
     // 处理扩展名
-    const ext = mime.split('/')[1] || ''
+    const ext = file.name.split('.').pop().toLowerCase()
     return accept.split(',').some(a => a.trim() === `.${ext}` || a.trim() === ext)
   }
 }
@@ -61,7 +65,7 @@ onMounted(() => {
       if (files.length > 0) {
         const file = files[0]
         // 匹配文件类型
-        if (!testAccept(file.type)) {
+        if (!testAccept(file)) {
           alert(`不支持的文件类型: ${file.name}`)
           return
         }
@@ -73,7 +77,7 @@ onMounted(() => {
 })
 
 function handleSelectFile(file) {
-  if (!testAccept(file.type)) {
+  if (!testAccept(file)) {
     alert(`不支持的文件类型: ${file.name}`)
     fileInput.value.value = ''
     return
