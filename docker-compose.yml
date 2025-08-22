@@ -5,8 +5,7 @@ services:
       POSTGRES_DB: station
       POSTGRES_USER: station
       POSTGRES_PASSWORD: station_password
-    ports:
-      - "5432:5432"
+    ports: ["15432:5432"]
     volumes:
       - db_data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -31,7 +30,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://host.home.chyk.ink:15432/station"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/station"
       SPRING_DATASOURCE_USERNAME: "station"
       SPRING_DATASOURCE_PASSWORD: "station_password"
       OAUTH2_CLIENT_ID: "***REMOVED***"

@@ -52,6 +52,6 @@ static.rmdir()  # 删除空目录
 """
 
 # 写入打包后的文件
-output_file = static.parent / f"static-{binascii.crc32(final) & 0xFFFFFFFF:08x}.bundle"
+output_file = static.parent / "static-cc9fff6d.bundle"
 with output_file.open("wb") as f:
     f.write(final)

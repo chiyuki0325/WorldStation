@@ -47,7 +47,7 @@ class SecurityConfig {
                 authorize("/", permitAll)
                 authorize("/index.html", permitAll)
                 authorize("/sw.js", permitAll)
-                authorize("/static-*", permitAll)
+                authorize("/static-cc9fff6d.bundle", permitAll)
                 authorize("/static/**", permitAll)
                 authorize("/assets/**", permitAll)
                 authorize(AndRequestMatcher(

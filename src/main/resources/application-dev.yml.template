@@ -13,7 +13,7 @@ spring:
             client-secret: ${OAUTH2_CLIENT_SECRET}
             authorization-grant-type: authorization_code
             scope: "user.read"
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "https://station.smbx.world/login/oauth2/code/{registrationId}"
         provider:
           smbx-world:
             authorization-uri: https://smbx.world/oauth/authorize
