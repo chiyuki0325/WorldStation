@@ -130,13 +130,13 @@ class OneDriveService(
         val parentPath = uploadPath.substringBeforeLast("/")
         logger.debug("文件路径: {}", uploadPath)
 
-
+        val guessed = ContentTypeUtils.guessUploadFileContentType(fileName, uploadKind)
         val contentType = if (contentType == "application/octet-stream") {
-            ContentTypeUtils.guessUploadFileContentType(fileName, uploadKind)
+            guessed
         } else {
             if (!ContentTypeUtils.testContentType(contentType, uploadKind)) {
                 logger.warn("不支持的文件类型: {}", contentType)
-                null
+                guessed
             } else contentType
         }
         logger.debug("Content-Type: {}", contentType)

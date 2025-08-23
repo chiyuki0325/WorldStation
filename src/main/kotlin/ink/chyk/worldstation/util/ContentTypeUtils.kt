@@ -52,6 +52,7 @@ class ContentTypeUtils {
                 UploadFileKind.WORLDMAP -> contentType in setOf(
                     "application/zip", "application/gzip", "application/x-zstd",
                     "application/x-rar-compressed", "application/x-7z-compressed",
+                    "application/x-zip-compressed",  "application/x-zip",
                     "application/x-ms-dos-executable"
                 )
                 UploadFileKind.PICBED -> contentType in setOf(
